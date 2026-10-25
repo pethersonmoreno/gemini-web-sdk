@@ -1,4 +1,13 @@
-export class Gem {
+export interface IGem {
+    id: string;
+    name: string;
+    description: string | null;
+    prompt: string | null;
+    predefined: boolean;
+    toString(): string;
+}
+
+export class Gem implements IGem {
     id: string;
     name: string;
     description: string | null;
