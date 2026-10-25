@@ -1,3 +1,6 @@
+export { MODEL_HEADER_KEY } from "./types/model.js";
+import { buildModelHeader, MODEL_HEADER_KEY, ModelDef, ModelDict } from "./types/model.js";
+
 export const STREAMING_FLAG_INDEX = 7;
 export const GEM_FLAG_INDEX = 19;
 export const TEMPORARY_CHAT_FLAG_INDEX = 45;
@@ -5,15 +8,6 @@ export const TEMPORARY_CHAT_FLAG_INDEX = 45;
 export const CARD_CONTENT_RE = /^http:\/\/googleusercontent\.com\/card_content\/\d+/;
 export const ARTIFACTS_RE = /http:\/\/googleusercontent\.com\/\w+\/\d+\n*/g;
 export const DEFAULT_METADATA = ['', '', '', null, null, null, null, null, null, ''];
-export const MODEL_HEADER_KEY = 'x-goog-ext-525001261-jspb';
-
-export function buildModelHeader(modelId, capacityTail, modelNumber = 1) {
-    return {
-        [MODEL_HEADER_KEY]: `[1,null,null,null,"${modelId}",null,null,0,[4,5,6,8],null,null,${capacityTail},null,null,${modelNumber}]`,
-        'x-goog-ext-73010989-jspb': '[0]',
-        'x-goog-ext-73010990-jspb': '[0,0,0]',
-    };
-}
 
 export const Endpoint = {
     GOOGLE: 'https://www.google.com',
@@ -22,6 +16,7 @@ export const Endpoint = {
     UPLOAD: 'https://content-push.googleapis.com/upload',
     BATCH_EXEC: 'https://gemini.google.com/_/BardChatUi/data/batchexecute',
 };
+export type EndpointOverrides = Partial<typeof Endpoint>;
 
 export const GRPC = {
     LIST_CHATS: 'MaZiqc',
@@ -63,7 +58,7 @@ const _MODEL_KEYS = [
     'BASIC_PRO', 'BASIC_FLASH', 'BASIC_LITE', 'BASIC_THINKING',
     'PLUS_PRO', 'PLUS_FLASH', 'PLUS_LITE',
     'ADVANCED_PRO', 'ADVANCED_FLASH', 'ADVANCED_LITE',
-];
+] as const;
 
 export const Model = {
     UNSPECIFIED: { model_name: 'unspecified', model_header: {}, advanced_only: false },
@@ -117,7 +112,7 @@ export const Model = {
         model_header: buildModelHeader('8c46e95b1a07cecc', 2, 6),
         advanced_only: true,
     },
-    fromName(name) {
+    fromName(name: string) {
         const lower = name.toLowerCase();
         for (const k of _MODEL_KEYS) {
             if (Model[k].model_name === lower) return Model[k];
@@ -125,13 +120,13 @@ export const Model = {
         const names = _MODEL_KEYS.map(k => Model[k].model_name).join(', ');
         throw new Error(`Unknown model name: ${name}. Available: ${names}`);
     },
-    fromDict(d) {
+    fromDict(d: ModelDict) {
         if (!d.model_name || !d.model_header || typeof d.model_header !== 'object') {
             throw new Error("model_name and model_header (object) required");
         }
         return { model_name: d.model_name, model_header: d.model_header, advanced_only: false };
     },
-    modelId(model) {
+    modelId(model: Pick<ModelDef, 'model_header'>) {
         const headerValue = model && model.model_header && model.model_header[MODEL_HEADER_KEY];
         if (!headerValue) return '';
         try {
