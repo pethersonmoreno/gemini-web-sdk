@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.3.1] - 2026-10-25
+
+### Updated
+- `.github/workflows/release.yml`: added way to publish scoped package in fork repository versions
+
 ## [2.3.0] - 2026-09-13
 
 ### Added
