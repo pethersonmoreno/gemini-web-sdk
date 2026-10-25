@@ -1,7 +1,7 @@
 {
   "name": "gemini-web-sdk",
   "version": "2.3.0",
-  "description": "Unofficial Node.js client for gemini.google.com — inspired by Gemini-API (Python). Supports streaming, chat sessions, gems, file uploads, and TypeScript.",
+  "description": "Unofficial Node.js client for gemini.google.com — inspired by Gemini-API (Python). Supports streaming, chat sessions, gems, file uploads, and TypeScript - testing.",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
