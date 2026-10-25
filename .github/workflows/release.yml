@@ -50,6 +50,21 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Release version: $VERSION"
 
+      - name: Validate version match
+        run: |
+          INPUT_VERSION="${{ steps.parse-version.outputs.version }}"
+          CLEAN_INPUT_VERSION="${INPUT_VERSION#v}"
+
+          PKG_VERSION=$(node -p "require('./package.json').version")
+
+          echo "Version input/tag: $CLEAN_INPUT_VERSION"
+          echo "package.json version: $PKG_VERSION"
+
+          if [ "$CLEAN_INPUT_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Mismatch version! Tag/Input version ($CLEAN_INPUT_VERSION) does not match package.json version ($PKG_VERSION)."
+            exit 1
+          fi
+
       - name: Extract release notes from CHANGELOG.md
         id: notes
         run: |
