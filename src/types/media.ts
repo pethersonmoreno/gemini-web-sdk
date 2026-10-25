@@ -105,7 +105,7 @@ export class GeneratedImage extends Image {
                         this.url = originalUrl;
                         return await super._performSave(savePath, filename, verbose);
                     }
-                } catch (e) {
+                } catch (e: any) {
                     if (verbose) console.debug(`Failed to fetch full size image via RPC: ${e.message}, falling back.`);
                 }
             }
@@ -240,7 +240,7 @@ export class GeneratedVideo extends Video {
         try {
             const filePath = await this._downloadFile(url, savePath, filename, '.jpg', verbose);
             return filePath === '206' ? null : filePath;
-        } catch (e) {
+        } catch (e: any) {
             if (verbose) console.warn(`Failed to save thumbnail (${key}): ${e.message}`);
             return null;
         }
@@ -298,7 +298,7 @@ export class GeneratedMedia extends Video {
         try {
             const filePath = await this._downloadFile(url, savePath, filename, '.jpg', verbose);
             return [key, filePath === '206' ? null : filePath];
-        } catch (e) {
+        } catch (e: any) {
             if (verbose) console.warn(`Failed to save thumbnail (${key}): ${e.message}`);
             return [key, null];
         }

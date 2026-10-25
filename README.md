@@ -806,7 +806,7 @@ const {
 try {
     const response = await chat.generateContent({ prompt: 'Hello!' });
     console.log(response.text);
-} catch (e) {
+} catch (e: any) {
     if (e instanceof AuthError) {
         console.error('Cookie expired or invalid. Please refresh your cookies.');
     } else if (e instanceof UsageLimitExceeded) {
