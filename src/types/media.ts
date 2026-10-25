@@ -35,9 +35,9 @@ export class Image implements IImage {
     alt: string;
     proxy: string | null;
     client_ref: GeminiClient | null;
-    constructor(opts: { url?: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null } = {}) {
+    constructor(opts: { url: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null }) {
         const { url, title = '[Image]', alt = '', proxy = null, client_ref = null } = opts;
-        this.url = url as string;
+        this.url = url;
         this.title = title;
         this.alt = alt;
         this.proxy = proxy;
@@ -106,7 +106,7 @@ export class Image implements IImage {
 export interface IWebImage extends IImage {}
 
 export class WebImage extends Image implements IWebImage {
-    constructor(opts: { url?: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null } = {}) {
+    constructor(opts: { url: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null }) {
         const { url, title = '[Image]', alt = '', proxy = null, client_ref = null } = opts;
         super({ url, title, alt, proxy, client_ref });
     }
@@ -130,9 +130,9 @@ export class GeneratedImage extends Image implements IGeneratedImage {
     rcid: string;
     image_id: string;
     constructor(opts: {
-        url?: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null;
+        url: string; title?: string; alt?: string; proxy?: string | null; client_ref?: GeminiClient | null;
         cid?: string; rid?: string; rcid?: string; image_id?: string;
-    } = {}) {
+    }) {
         const { url, title = '[Image]', alt = '', proxy = null, client_ref = null, cid = '', rid = '', rcid = '', image_id = '' } = opts;
         super({ url, title, alt, proxy });
         this.client_ref = client_ref;
