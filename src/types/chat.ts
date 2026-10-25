@@ -1,5 +1,9 @@
 export class ChatTurn {
-    constructor({ role, text, model_output = null } = {}) {
+    role?: string;
+    text?: string;
+    model_output: string | null;
+    constructor(opts: { role?: string, text?: string, model_output?: string|null } = {}) {
+        const { role, text, model_output = null } = opts;
         this.role = role;
         this.text = text;
         this.model_output = model_output;
@@ -7,12 +11,15 @@ export class ChatTurn {
 
     toString() {
         const preview = this.text && this.text.length > 100 ? this.text.slice(0, 100) + '...' : (this.text || '');
-        return `${this.role.toUpperCase()}: ${preview}`;
+        return `${this.role?.toUpperCase()}: ${preview}`;
     }
 }
 
 export class ChatHistory {
-    constructor({ cid, turns } = {}) {
+    cid?: unknown;
+    turns?: unknown[];
+    constructor(opts: { cid?: unknown, turns?: unknown[] } = {}) {
+        const { cid, turns } = opts;
         this.cid = cid;
         this.turns = turns || [];
     }
@@ -23,11 +30,16 @@ export class ChatHistory {
 }
 
 export class ChatInfo {
-    constructor({ cid, title, is_pinned = false, timestamp } = {}) {
+    cid?: unknown;
+    title?: string;
+    is_pinned: boolean;
+    timestamp: number;
+    constructor(opts: { cid?: unknown, title?: string, is_pinned?: boolean, timestamp?: number } = {}) {
+        const { cid, title, is_pinned = false, timestamp } = opts;
         this.cid = cid;
         this.title = title;
         this.is_pinned = is_pinned;
-        this.timestamp = timestamp;
+        this.timestamp = timestamp as number;
     }
 
     toString() {
