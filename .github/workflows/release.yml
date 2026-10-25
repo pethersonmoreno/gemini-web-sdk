@@ -112,46 +112,63 @@ jobs:
       - name: Validate prepublish checks
         run: npm test
 
-      - name: Adjust package settings for fork
+      - name: Detect repository context
+        id: context
         run: |
           GITHUB_SERVER_URL="${{ github.server_url }}"
           GITHUB_REPOSITORY="${{ github.repository }}"
+          GITHUB_REPOSITORY_URL="${{ github.server_url }}/${{ github.repository }}"
           GITHUB_OWNER="${{ github.repository_owner }}"
           GITHUB_OWNER_DISPLAY_NAME="${{ github.event.repository.owner.name }}"
           if [ -z "$GITHUB_OWNER_DISPLAY_NAME" ] || [ "$GITHUB_OWNER_DISPLAY_NAME" = "null" ]; then
             GITHUB_OWNER_DISPLAY_NAME="$GITHUB_OWNER"
           fi
           ORIGINAL_GITHUB_REPO=$(node -p "require('./package.json').repository.url.replaceAll(/^[^\/]+\/\/github\.com\//g, '').replaceAll(/\.git$/g, '')")
+          
           if [ "$GITHUB_REPOSITORY" != "$ORIGINAL_GITHUB_REPO" ]; then
-            PKG_NAME=$(node -p "require('./package.json').name.split('/').pop()")
-            echo "Updating package name to scope of fork @$GITHUB_OWNER/$PKG_NAME"
-            npm pkg set name="@$GITHUB_OWNER/$PKG_NAME"
-            PKG_AUTHOR=$(node -p "require('./package.json').author")
-            if [ $(echo "$PKG_AUTHOR" | grep "$GITHUB_OWNER_DISPLAY_NAME" | wc -l) -eq 0 ]; then
-              echo "Updating package author to add the owner of the repository to it: $GITHUB_OWNER_DISPLAY_NAME"
-              npm pkg set author="$PKG_AUTHOR and $GITHUB_OWNER_DISPLAY_NAME"
-            fi
-            GITHUB_REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
-            echo "Updating repository URLs in repository, bugs and homepage of package.json"
-            npm pkg set repository.type="git" repository.url="git+${GITHUB_REPOSITORY_URL}.git"
-            npm pkg set bugs.url="${GITHUB_REPOSITORY_URL}/issues"
-            npm pkg set homepage="${GITHUB_REPOSITORY_URL}#readme"
+            IS_FORK="true"
           else
-            echo "Original repository detected. Using original without scope and context updates."
+            IS_FORK="false"
           fi
 
-      - name: Publish to npm
+          echo "GITHUB_REPOSITORY_URL=$GITHUB_REPOSITORY_URL" >> $GITHUB_ENV
+          echo "IS_FORK=$IS_FORK" >> $GITHUB_ENV
+
+          echo "GITHUB_OWNER=$GITHUB_OWNER" >> $GITHUB_ENV
+          echo "GITHUB_OWNER_DISPLAY_NAME=$GITHUB_OWNER_DISPLAY_NAME" >> $GITHUB_ENV
+
+      - name: Adjust package settings for fork
+        if: env.IS_FORK == 'true'
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name.split('/').pop()")
+          echo "Updating package name to scope of fork @$GITHUB_OWNER/$PKG_NAME"
+          npm pkg set name="@$GITHUB_OWNER/$PKG_NAME"
+
+          PKG_AUTHOR=$(node -p "require('./package.json').author")
+          if [ $(echo "$PKG_AUTHOR" | grep "$GITHUB_OWNER_DISPLAY_NAME" | wc -l) -eq 0 ]; then
+            echo "Updating package author to add the owner of the repository to it: $GITHUB_OWNER_DISPLAY_NAME"
+            npm pkg set author="$PKG_AUTHOR and $GITHUB_OWNER_DISPLAY_NAME"
+          fi
+
+          echo "Updating repository URLs in package.json"
+          npm pkg set repository.type="git" repository.url="git+${GITHUB_REPOSITORY_URL}.git"
+          npm pkg set bugs.url="${GITHUB_REPOSITORY_URL}/issues"
+          npm pkg set homepage="${GITHUB_REPOSITORY_URL}#readme"
+
+      - name: Publish to npm (Fork context)
+        if: env.IS_FORK == 'true'
         run: |
           unset NPM_CONFIG_USERCONFIG
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm stage publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-          ORIGINAL_GITHUB_REPO=$(node -p "require('./package.json').repository.url.replaceAll(/^[^\/]+\/\/github\.com\//g, '').replaceAll(/\.git$/g, '')")
-          if [ "${{ github.repository }}" != "$ORIGINAL_GITHUB_REPO" ]; then
-            echo "Publishing via stage publish (Fork)..."
-            npm stage publish --access public
-          else
-            echo "Publishing with provenance to NPM (original repository)..."
-            npm publish --provenance --access public
-          fi
+      - name: Publish to npm
+        if: env.IS_FORK == 'false'
+        run: |
+          unset NPM_CONFIG_USERCONFIG
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm publish --provenance --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
