@@ -1,6 +1,4 @@
-'use strict';
-
-class Gem {
+export class Gem {
     constructor({ id, name, description = null, prompt = null, predefined } = {}) {
         this.id = id;
         this.name = name;
@@ -14,7 +12,7 @@ class Gem {
     }
 }
 
-class GemJar {
+export class GemJar {
     constructor(entries = []) {
         this._store = {};
         for (const [id, gem] of entries) this._store[id] = gem;
@@ -54,5 +52,3 @@ class GemJar {
 
     toObject() { return { ...this._store }; }
 }
-
-module.exports = { Gem, GemJar };

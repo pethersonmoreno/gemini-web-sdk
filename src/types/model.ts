@@ -1,8 +1,6 @@
-'use strict';
+import { buildModelHeader } from '../constants.js';
 
-const { buildModelHeader } = require('../constants');
-
-class RPCData {
+export class RPCData {
     constructor({ rpcid, payload, identifier = 'generic' } = {}) {
         this.rpcid = rpcid;
         this.payload = payload;
@@ -18,7 +16,7 @@ class RPCData {
     }
 }
 
-class AvailableModel {
+export class AvailableModel {
     constructor({ model_id, model_name, display_name, description, capacity, capacity_field = 12, model_number = 1, is_available = true } = {}) {
         this.model_id = model_id;
         this.model_name = model_name;
@@ -49,5 +47,3 @@ class AvailableModel {
     }
 
 }
-
-module.exports = { RPCData, AvailableModel };

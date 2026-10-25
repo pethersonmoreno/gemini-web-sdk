@@ -1,10 +1,8 @@
-'use strict';
+import followRedirects from 'follow-redirects';
 
-const followRedirects = require('follow-redirects');
+export const DEFAULT_MAX_RESPONSE_HEADER_SIZE = 65536;
 
-const DEFAULT_MAX_RESPONSE_HEADER_SIZE = 65536;
-
-function headerLimitConfig(maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, { maxRedirects } = {}) {
+export function headerLimitConfig(maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, { maxRedirects } = {}) {
     return {
         transport: {
             request(options, callback) {
@@ -19,5 +17,3 @@ function headerLimitConfig(maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, { m
         },
     };
 }
-
-module.exports = { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig };

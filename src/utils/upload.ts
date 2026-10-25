@@ -1,19 +1,17 @@
-'use strict';
-
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const mime = require('mime-types');
-const FormData = require('form-data');
-const { Endpoint, Headers } = require('../constants');
-const { parseProxy } = require('./auth');
-const { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } = require('./request');
+import axios from 'axios';
+import fs from 'node:fs';
+import path from 'node:path';
+import mime from 'mime-types';
+import FormData from 'form-data';
+import { Endpoint, Headers } from '../constants.js';
+import { parseProxy } from './auth.js';
+import { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } from './request.js';
 
 function generateRandomName(ext = '.txt') {
     return `input_${Math.floor(Math.random() * 9000000) + 1000000}${ext}`;
 }
 
-function parseFileName(file) {
+export function parseFileName(file) {
     if (typeof file === 'string') {
         const fp = path.resolve(file);
         if (!fs.existsSync(fp)) throw new Error(`${fp} is not a valid file.`);
@@ -23,7 +21,7 @@ function parseFileName(file) {
     return generateRandomName();
 }
 
-async function uploadFile(file, proxy = null, pushId = '', cookies = {}, { maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, endpoints = {} } = {}) {
+export async function uploadFile(file, proxy = null, pushId = '', cookies = {}, { maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, endpoints = {} } = {}) {
     let content, fname;
 
     if (typeof file === 'string') {
@@ -59,5 +57,3 @@ async function uploadFile(file, proxy = null, pushId = '', cookies = {}, { maxHe
 
     return res.data;
 }
-
-module.exports = { uploadFile, parseFileName };

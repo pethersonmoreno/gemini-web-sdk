@@ -1,6 +1,4 @@
-'use strict';
-
-class ChatTurn {
+export class ChatTurn {
     constructor({ role, text, model_output = null } = {}) {
         this.role = role;
         this.text = text;
@@ -13,7 +11,7 @@ class ChatTurn {
     }
 }
 
-class ChatHistory {
+export class ChatHistory {
     constructor({ cid, turns } = {}) {
         this.cid = cid;
         this.turns = turns || [];
@@ -24,7 +22,7 @@ class ChatHistory {
     }
 }
 
-class ChatInfo {
+export class ChatInfo {
     constructor({ cid, title, is_pinned = false, timestamp } = {}) {
         this.cid = cid;
         this.title = title;
@@ -39,5 +37,3 @@ class ChatInfo {
         return `${pin}${title} (${dt})`;
     }
 }
-
-module.exports = { ChatTurn, ChatHistory, ChatInfo };
