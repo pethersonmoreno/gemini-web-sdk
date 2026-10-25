@@ -27,12 +27,17 @@
     "llm",
     "unofficial"
   ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node test/rid-rcid.test.js && node test/max-response-headers.test.js"
+  },
   "dependencies": {
     "axios": "^1.13.6",
     "form-data": "^4.0.5",
     "uuid": "^13.0.0"
   },
-  "scripts": {
-    "test": "node test/rid-rcid.test.js && node test/max-response-headers.test.js"
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }
