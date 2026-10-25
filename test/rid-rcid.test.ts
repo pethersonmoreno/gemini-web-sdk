@@ -138,7 +138,7 @@ async function testReadChatInternalRidInModelOutput() {
     assert.ok(result, '_readChatInternal should return a result');
     assert.strictEqual(result.cid, TEST_CID);
 
-    const modelTurn = result.turns.find(t => t.role === 'model');
+    const modelTurn = result.turns?.find(t => t.role === 'model');
     assert.ok(modelTurn, 'Expected a model turn');
     assert.ok(modelTurn.model_output, 'Expected model_output on internal turn');
 
