@@ -78,7 +78,7 @@ class Gemini {
 
                     if (this.autoClose) this._resetCloseTask();
                 }
-            } catch (e) {
+            } catch (e: any) {
                 this._ready = false;
                 this._initPromise = null;
                 await this.close();
@@ -330,7 +330,7 @@ class Gemini {
             try {
                 for await (const out of this._stream({ prompt, fileData, model, gem, chat, temporary, ss, deep_research, extended_thinking })) yield out;
                 return;
-            } catch (e) {
+            } catch (e: any) {
                 if (e instanceof GeminiError || e instanceof ModelInvalid || e instanceof UsageLimitExceeded || e instanceof TemporarilyBlocked) throw e;
                 if (attempt >= retries) throw e;
                 await sleep(1000 * (attempt + 1));
@@ -525,7 +525,7 @@ class Gemini {
                     const outs = processParts(parts);
                     for (const o of outs) yielded.push(o);
                     if (outs.length || isThinking || isQueueing) lastProg = Date.now();
-                } catch (e) { clearInterval(watchdog); reject(e); }
+                } catch (e: any) { clearInterval(watchdog); reject(e); }
             });
 
             res.data.on('end', () => {
@@ -536,7 +536,7 @@ class Gemini {
                     const hasMediaOrVideo = yielded.some(o => o.videos?.length > 0 || o.media?.length > 0);
                     if (!isCompleted && !isFinalChunk && !hasMediaOrVideo) reject(new APIError('Stream interrupted or truncated.'));
                     else resolve();
-                } catch (e) { reject(e); }
+                } catch (e: any) { reject(e); }
             });
 
             res.data.on('error', e => { clearInterval(watchdog); reject(new APIError(`Stream error: ${e.message}`)); });
@@ -790,7 +790,7 @@ class Gemini {
                 chat.lastOutput = output;
                 return output;
             }
-        } catch (e) {
+        } catch (e: any) {
             if (e instanceof UsageLimitExceeded || e instanceof ModelInvalid || e instanceof TemporarilyBlocked) throw e;
             if (e instanceof GeminiError || e instanceof APIError) recoverableError = e;
             else throw e;
@@ -973,7 +973,7 @@ class Gemini {
                     throw new APIError(`Batch execution failed with status code ${res.status}`);
                 }
                 return res;
-            } catch (e) {
+            } catch (e: any) {
                 lastErr = e;
                 if (attempt < retries) await sleep(1000 * (attempt + 1));
             }

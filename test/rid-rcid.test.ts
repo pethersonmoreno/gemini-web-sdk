@@ -186,7 +186,7 @@ async function testContinueChatGuestMode() {
     try {
         await client.continueChat('c_any');
         assert.fail('Should have thrown in guest mode');
-    } catch (e) {
+    } catch (e: any) {
         assert.ok(e.message.includes('guest'), `Error should mention guest mode: ${e.message}`);
     }
 
