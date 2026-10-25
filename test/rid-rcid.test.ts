@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { Gemini } from '../index.js';
 import { Candidate, ModelOutput } from '../src/types/output.js';
 
-function buildReadChatResponse(turnsData) {
+function buildReadChatResponse(turnsData: any[]) {
     const body = JSON.stringify([turnsData]);
     const part = [null, null, body];
     const fullResponse = JSON.stringify([part]);
@@ -31,7 +31,7 @@ function buildTurnsData() {
     ];
 }
 
-async function createMockClient(readChatResponse) {
+async function createMockClient(readChatResponse: string) {
     const client = new Gemini();
     client._ready = true;
     client._guest = false;
@@ -42,7 +42,7 @@ async function createMockClient(readChatResponse) {
     client.pushId = 'test_feed';
     client._reqid = 10000;
 
-    client._batchExecute = async () => ({
+    (client as any)._batchExecute = async () => ({
         data: readChatResponse,
         status: 200,
         headers: {},
@@ -121,7 +121,7 @@ async function testReadChatMultipleModelCandidates() {
 }
 
 async function testReadChatEmptyTurns() {
-    const turnsData = [];
+    const turnsData: any[] = [];
     const response = buildReadChatResponse(turnsData);
     const client = await createMockClient(response);
 
