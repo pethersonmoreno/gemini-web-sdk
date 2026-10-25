@@ -1,8 +1,11 @@
+export { GRPC, Endpoint, EndpointOverrides, Headers } from './src/constants.js';
+export { NewChatOptions, GenerateContentOptions } from './src/types/chat.js';
+export { GeminiOptions, AskOptions, ResearchOptions, AddGemOptions, SetGemOptions } from './src/types/gemini.js';
 export { Gemini } from './src/gemini.js';
 export { ChatSession } from './src/chat.js';
 export { Model, ErrorCode } from './src/constants.js';
 export { AuthError, APIError, GeminiError, UsageLimitExceeded, ModelInvalid, TemporarilyBlocked } from './src/errors.js';
-export { AvailableModel } from './src/types/model.js';
+export { buildModelHeader, AvailableModel, RPCData } from './src/types/model.js';
 export { ModelOutput, Candidate } from './src/types/output.js';
 export { Gem, GemJar } from './src/types/gem.js';
 export { ChatTurn, ChatHistory, ChatInfo } from './src/types/chat.js';
