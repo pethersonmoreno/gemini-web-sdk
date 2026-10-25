@@ -1,27 +1,25 @@
-'use strict';
+import axios from 'axios';
+import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
-const axios = require('axios');
-const crypto = require('crypto');
-const { v4: uuidv4 } = require('uuid');
-
-const {
+import {
     Endpoint, GRPC, Headers, Model, ErrorCode,
     TEMPORARY_CHAT_FLAG_INDEX, STREAMING_FLAG_INDEX, GEM_FLAG_INDEX,
     CARD_CONTENT_RE, ARTIFACTS_RE, DEFAULT_METADATA, MODEL_HEADER_KEY,
-} = require('./constants');
-const { APIError, GeminiError, UsageLimitExceeded, ModelInvalid, TemporarilyBlocked } = require('./errors');
-const { AvailableModel, RPCData } = require('./types/model');
-const { Candidate, ModelOutput } = require('./types/output');
-const { WebImage, GeneratedImage, GeneratedVideo, GeneratedMedia } = require('./types/media');
-const { DeepResearchPlan, DeepResearchStatus, DeepResearchResult } = require('./types/research');
-const { getAccessToken, cookieStr, parseCookies, parseProxy } = require('./utils/auth');
-const { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } = require('./utils/request');
-const { uploadFile, parseFileName } = require('./utils/upload');
-const { getDeltaByFpLen, getNestedValue, extractJsonFromResponse, StreamingFrameParser } = require('./utils/parser');
-const { extractDeepResearchPlan, extractDeepResearchStatusPayload } = require('./utils/research');
-const { ChatSession } = require('./chat');
+} from './constants.js';
+import { APIError, GeminiError, UsageLimitExceeded, ModelInvalid, TemporarilyBlocked } from './errors.js';
+import { AvailableModel, RPCData } from './types/model.js';
+import { Candidate, ModelOutput } from './types/output.js';
+import { WebImage, GeneratedImage, GeneratedVideo, GeneratedMedia } from './types/media.js';
+import { DeepResearchPlan, DeepResearchStatus, DeepResearchResult } from './types/research.js';
+import { getAccessToken, cookieStr, parseCookies, parseProxy } from './utils/auth.js';
+import { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } from './utils/request.js';
+import { uploadFile, parseFileName } from './utils/upload.js';
+import { getDeltaByFpLen, getNestedValue, extractJsonFromResponse, StreamingFrameParser } from './utils/parser.js';
+import { extractDeepResearchPlan, extractDeepResearchStatusPayload } from './utils/research.js';
+import { ChatSession } from './chat.js';
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
 
 class Gemini {
     constructor({

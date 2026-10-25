@@ -1,20 +1,18 @@
-'use strict';
+import axios from 'axios';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { parseProxy } from '../utils/auth.js';
+import { headerLimitConfig } from '../utils/request.js';
 
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-const { parseProxy } = require('../utils/auth');
-const { headerLimitConfig } = require('../utils/request');
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
 
 function sanitizeFilename(str, maxLen = 50) {
     if (!str) return '';
     return str.replace(/[^a-zA-Z0-9\s_-]/g, '').replace(/\s+/g, '_').slice(0, maxLen).replace(/_+$/, '');
 }
 
-class Image {
+export class Image {
     constructor({ url, title = '[Image]', alt = '', proxy = null, client_ref = null } = {}) {
         this.url = url;
         this.title = title;
@@ -80,13 +78,13 @@ class Image {
     }
 }
 
-class WebImage extends Image {
+export class WebImage extends Image {
     constructor({ url, title = '[Image]', alt = '', proxy = null, client_ref = null } = {}) {
         super({ url, title, alt, proxy, client_ref });
     }
 }
 
-class GeneratedImage extends Image {
+export class GeneratedImage extends Image {
     constructor({ url, title = '[Image]', alt = '', proxy = null, client_ref = null, cid = '', rid = '', rcid = '', image_id = '' } = {}) {
         super({ url, title, alt, proxy });
         this.client_ref = client_ref;
@@ -138,7 +136,7 @@ class GeneratedImage extends Image {
     }
 }
 
-class Video {
+export class Video {
     constructor({ url, title = '[Video]', proxy = null, client_ref = null } = {}) {
         this.url = url;
         this.title = title;
@@ -207,7 +205,7 @@ class Video {
     }
 }
 
-class GeneratedVideo extends Video {
+export class GeneratedVideo extends Video {
     constructor({ url, thumbnail = null, cid = '', rid = '', rcid = '', client_ref = null, proxy = null } = {}) {
         super({ url, title: '[Generated Video]', proxy, client_ref });
         this.thumbnail = thumbnail;
@@ -249,7 +247,7 @@ class GeneratedVideo extends Video {
     }
 }
 
-class GeneratedMedia extends Video {
+export class GeneratedMedia extends Video {
     constructor({ url = '', thumbnail = null, mp3_url = '', mp3_thumbnail = null, cid = '', rid = '', rcid = '', client_ref = null, proxy = null } = {}) {
         super({ url, title: '[Generated Media]', proxy });
         this.thumbnail = thumbnail;
@@ -313,5 +311,3 @@ class GeneratedMedia extends Video {
         return `GeneratedMedia(title=${this.title}, urls=${urls.join(', ')})`;
     }
 }
-
-module.exports = { Image, WebImage, GeneratedImage, Video, GeneratedVideo, GeneratedMedia };

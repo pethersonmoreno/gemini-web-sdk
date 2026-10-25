@@ -1,7 +1,5 @@
-'use strict';
-
-const { inspect } = require('util');
-const { WebImage, GeneratedImage } = require('./media');
+import { inspect } from 'node:util';
+import { WebImage, GeneratedImage } from './media.js';
 
 function decodeHtml(str) {
     if (!str) return str;
@@ -28,7 +26,7 @@ function decodeHtml(str) {
         .replace(/&rsquo;/g, '’');
 }
 
-class Candidate {
+export class Candidate {
     constructor({
         rcid,
         index = 0,
@@ -79,7 +77,7 @@ class Candidate {
     }
 }
 
-class ModelOutput {
+export class ModelOutput {
     constructor(metadata, candidates, { chosen = 0, model = '', gem = null } = {}) {
         this.cid = metadata?.[0] || '';
         this.rid = metadata?.[1] || '';
@@ -133,5 +131,3 @@ class ModelOutput {
         return lines.join('\n');
     }
 }
-
-module.exports = { Candidate, ModelOutput };

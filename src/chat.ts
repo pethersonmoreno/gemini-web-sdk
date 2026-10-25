@@ -1,9 +1,7 @@
-'use strict';
+import { DEFAULT_METADATA } from './constants.js';
+import { Model } from './constants.js';
 
-const { DEFAULT_METADATA } = require('./constants');
-const { Model } = require('./constants');
-
-class ChatSession {
+export class ChatSession {
     constructor(client, { model = Model.UNSPECIFIED, temporary = false, gem = null, metadata = null } = {}) {
         this.client = client;
         this._meta = [...DEFAULT_METADATA];
@@ -69,5 +67,3 @@ class ChatSession {
         if (this.cid) await this.client.deleteChat(this.cid);
     }
 }
-
-module.exports = { ChatSession };

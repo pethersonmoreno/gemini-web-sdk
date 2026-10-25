@@ -1,15 +1,13 @@
-'use strict';
+export const STREAMING_FLAG_INDEX = 7;
+export const GEM_FLAG_INDEX = 19;
+export const TEMPORARY_CHAT_FLAG_INDEX = 45;
 
-const STREAMING_FLAG_INDEX = 7;
-const GEM_FLAG_INDEX = 19;
-const TEMPORARY_CHAT_FLAG_INDEX = 45;
+export const CARD_CONTENT_RE = /^http:\/\/googleusercontent\.com\/card_content\/\d+/;
+export const ARTIFACTS_RE = /http:\/\/googleusercontent\.com\/\w+\/\d+\n*/g;
+export const DEFAULT_METADATA = ['', '', '', null, null, null, null, null, null, ''];
+export const MODEL_HEADER_KEY = 'x-goog-ext-525001261-jspb';
 
-const CARD_CONTENT_RE = /^http:\/\/googleusercontent\.com\/card_content\/\d+/;
-const ARTIFACTS_RE = /http:\/\/googleusercontent\.com\/\w+\/\d+\n*/g;
-const DEFAULT_METADATA = ['', '', '', null, null, null, null, null, null, ''];
-const MODEL_HEADER_KEY = 'x-goog-ext-525001261-jspb';
-
-function buildModelHeader(modelId, capacityTail, modelNumber = 1) {
+export function buildModelHeader(modelId, capacityTail, modelNumber = 1) {
     return {
         [MODEL_HEADER_KEY]: `[1,null,null,null,"${modelId}",null,null,0,[4,5,6,8],null,null,${capacityTail},null,null,${modelNumber}]`,
         'x-goog-ext-73010989-jspb': '[0]',
@@ -17,7 +15,7 @@ function buildModelHeader(modelId, capacityTail, modelNumber = 1) {
     };
 }
 
-const Endpoint = {
+export const Endpoint = {
     GOOGLE: 'https://www.google.com',
     INIT: 'https://gemini.google.com/app',
     GENERATE: 'https://gemini.google.com/_/BardChatUi/data/assistant.lamda.BardFrontendService/StreamGenerate',
@@ -25,7 +23,7 @@ const Endpoint = {
     BATCH_EXEC: 'https://gemini.google.com/_/BardChatUi/data/batchexecute',
 };
 
-const GRPC = {
+export const GRPC = {
     LIST_CHATS: 'MaZiqc',
     READ_CHAT: 'hNvQHb',
     DELETE_CHAT_1: 'GzXR5e',
@@ -40,7 +38,7 @@ const GRPC = {
     GET_FULL_SIZE_IMAGE: 'c8o8Fe',
 };
 
-const Headers = {
+export const Headers = {
     REFERER: {
         'Origin': 'https://gemini.google.com',
         'Referer': 'https://gemini.google.com/',
@@ -67,7 +65,7 @@ const _MODEL_KEYS = [
     'ADVANCED_PRO', 'ADVANCED_FLASH', 'ADVANCED_LITE',
 ];
 
-const Model = {
+export const Model = {
     UNSPECIFIED: { model_name: 'unspecified', model_header: {}, advanced_only: false },
     BASIC_PRO: {
         model_name: 'gemini-3-pro',
@@ -144,7 +142,7 @@ const Model = {
         }
     },
 };
-const ErrorCode = {
+export const ErrorCode = {
     TEMPORARY_ERROR_1013: 1013,
     USAGE_LIMIT_EXCEEDED: 1037,
     MODEL_INCONSISTENT: 1050,
@@ -153,18 +151,3 @@ const ErrorCode = {
     FEATURE_NOT_AVAILABLE: 1097,
 };
 
-module.exports = {
-    STREAMING_FLAG_INDEX,
-    GEM_FLAG_INDEX,
-    TEMPORARY_CHAT_FLAG_INDEX,
-    CARD_CONTENT_RE,
-    ARTIFACTS_RE,
-    DEFAULT_METADATA,
-    MODEL_HEADER_KEY,
-    buildModelHeader,
-    Endpoint,
-    GRPC,
-    Headers,
-    Model,
-    ErrorCode,
-};

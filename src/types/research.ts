@@ -1,6 +1,4 @@
-'use strict';
-
-class DeepResearchPlan {
+export class DeepResearchPlan {
     constructor({
         research_id = null,
         title = null,
@@ -30,7 +28,7 @@ class DeepResearchPlan {
     }
 }
 
-class DeepResearchStatus {
+export class DeepResearchStatus {
     constructor({
         research_id,
         state = 'running',
@@ -54,7 +52,7 @@ class DeepResearchStatus {
     }
 }
 
-class DeepResearchResult {
+export class DeepResearchResult {
     constructor({ plan, start_output = null, final_output = null, statuses = [], done = false } = {}) {
         this.plan = plan;
         this.start_output = start_output;
@@ -67,5 +65,3 @@ class DeepResearchResult {
         return this.final_output ? this.final_output.text : '';
     }
 }
-
-module.exports = { DeepResearchPlan, DeepResearchStatus, DeepResearchResult };
