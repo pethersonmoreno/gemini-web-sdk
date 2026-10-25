@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.parse-version.outputs.version }}
+      sha: ${{ steps.get_sha.outputs.sha }}
     steps:
       - name: Checkout
         if: github.event_name == 'push'
@@ -118,10 +119,12 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
