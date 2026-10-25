@@ -1,13 +1,10 @@
-'use strict';
+import assert from 'node:assert';
+import http from 'node:http';
+import net from 'node:net';
 
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
-const path = require('path');
-
-const { Gemini } = require(path.join(__dirname, '..', 'index'));
-const { AuthError } = require(path.join(__dirname, '..', 'src', 'errors'));
-const { RPCData } = require(path.join(__dirname, '..', 'src', 'types', 'model'));
+import { Gemini } from '../index.js';
+import { AuthError } from '../src/errors.js';
+import { RPCData } from '../src/types/model.js';
 
 const TARGET_HEADER_BYTES = 20 * 1024;
 const BODY_INIT_OK = '<!doctype html><html><body><script>window.WIZ_global_data = '

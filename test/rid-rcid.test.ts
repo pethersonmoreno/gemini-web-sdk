@@ -1,10 +1,7 @@
-'use strict';
+import assert from 'node:assert';
 
-const assert = require('assert');
-const path = require('path');
-
-const { Gemini } = require(path.join(__dirname, '..', 'index'));
-const { Candidate, ModelOutput } = require(path.join(__dirname, '..', 'src', 'types', 'output'));
+import { Gemini } from '../index.js';
+import { Candidate, ModelOutput } from '../src/types/output.js';
 
 function buildReadChatResponse(turnsData) {
     const body = JSON.stringify([turnsData]);

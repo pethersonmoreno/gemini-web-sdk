@@ -1,15 +1,13 @@
-'use strict';
+import axios from 'axios';
+import { Endpoint, Headers } from '../constants.js';
+import { AuthError } from '../errors.js';
+import { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } from './request.js';
 
-const axios = require('axios');
-const { Endpoint, Headers } = require('../constants');
-const { AuthError } = require('../errors');
-const { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } = require('./request');
-
-function cookieStr(c) {
+export function cookieStr(c) {
     return Object.entries(c).map(([k, v]) => `${k}=${v}`).join('; ');
 }
 
-function parseCookies(headers, base = {}) {
+export function parseCookies(headers, base = {}) {
     const out = { ...base };
     const raw = headers['set-cookie'] || headers['Set-Cookie'];
     const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
@@ -21,7 +19,7 @@ function parseCookies(headers, base = {}) {
     return out;
 }
 
-function parseProxy(str) {
+export function parseProxy(str) {
     if (!str) return undefined;
     try {
         const u = new URL(str);
@@ -47,7 +45,7 @@ async function sendInitRequest(cookies, proxy = null, { maxHeaderSize = DEFAULT_
     return [snlm0e, cfb2h, fdrfje, language, pushId, parseCookies(res.headers, cookies)];
 }
 
-async function getAccessToken(baseCookies, proxy = null, verbose = false, { maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, endpoints = {} } = {}) {
+export async function getAccessToken(baseCookies, proxy = null, verbose = false, { maxHeaderSize = DEFAULT_MAX_RESPONSE_HEADER_SIZE, endpoints = {} } = {}) {
     let extraCookies = {};
     try {
         const r = await axios.get(endpoints.GOOGLE || Endpoint.GOOGLE, {
@@ -67,5 +65,3 @@ async function getAccessToken(baseCookies, proxy = null, verbose = false, { maxH
     const [snlm0e, cfb2h, fdrfje, language, pushId, validCookies] = result;
     return [snlm0e, cfb2h, fdrfje, language, pushId, validCookies];
 }
-
-module.exports = { getAccessToken, cookieStr, parseCookies, parseProxy };

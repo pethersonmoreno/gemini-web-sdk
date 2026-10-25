@@ -1,42 +1,10 @@
-'use strict';
-
-const { Gemini } = require('./src/gemini');
-const { ChatSession } = require('./src/chat');
-const { Model, ErrorCode } = require('./src/constants');
-const { AuthError, APIError, GeminiError, UsageLimitExceeded, ModelInvalid, TemporarilyBlocked } = require('./src/errors');
-const { AvailableModel } = require('./src/types/model');
-const { ModelOutput, Candidate } = require('./src/types/output');
-const { Gem, GemJar } = require('./src/types/gem');
-const { ChatTurn, ChatHistory, ChatInfo } = require('./src/types/chat');
-const { DeepResearchPlan, DeepResearchStatus, DeepResearchResult } = require('./src/types/research');
-const { Image, WebImage, GeneratedImage, Video, GeneratedVideo, GeneratedMedia } = require('./src/types/media');
-
-module.exports = {
-    Gemini,
-    ChatSession,
-    Model,
-    ErrorCode,
-    AuthError,
-    APIError,
-    GeminiError,
-    UsageLimitExceeded,
-    ModelInvalid,
-    TemporarilyBlocked,
-    AvailableModel,
-    ModelOutput,
-    Candidate,
-    Gem,
-    GemJar,
-    ChatTurn,
-    ChatHistory,
-    ChatInfo,
-    DeepResearchPlan,
-    DeepResearchStatus,
-    DeepResearchResult,
-    Image,
-    WebImage,
-    GeneratedImage,
-    Video,
-    GeneratedVideo,
-    GeneratedMedia,
-};
+export { Gemini } from './src/gemini.js';
+export { ChatSession } from './src/chat.js';
+export { Model, ErrorCode } from './src/constants.js';
+export { AuthError, APIError, GeminiError, UsageLimitExceeded, ModelInvalid, TemporarilyBlocked } from './src/errors.js';
+export { AvailableModel } from './src/types/model.js';
+export { ModelOutput, Candidate } from './src/types/output.js';
+export { Gem, GemJar } from './src/types/gem.js';
+export { ChatTurn, ChatHistory, ChatInfo } from './src/types/chat.js';
+export { DeepResearchPlan, DeepResearchStatus, DeepResearchResult } from './src/types/research.js';
+export { Image, WebImage, GeneratedImage, Video, GeneratedVideo, GeneratedMedia } from './src/types/media.js';

@@ -1,9 +1,7 @@
-'use strict';
-
 const FLICKER_ESC_RE = /\\+[`*_~].*$/;
 const LENGTH_MARKER_RE = /^(\d+)\n/;
 
-function getCleanText(s) {
+export function getCleanText(s) {
     if (!s) return '';
     if (s.endsWith('\n```')) s = s.slice(0, -4);
     return s.replace(FLICKER_ESC_RE, '');
@@ -44,7 +42,7 @@ function longestCommonSubsequenceBlocks(a, b) {
     return blocks;
 }
 
-function getDeltaByFpLen(newRaw, lastSentClean, isFinal) {
+export function getDeltaByFpLen(newRaw, lastSentClean, isFinal) {
     const newC = isFinal ? newRaw : getCleanText(newRaw);
 
     if (newC.startsWith(lastSentClean)) {
@@ -76,7 +74,7 @@ function getDeltaByFpLen(newRaw, lastSentClean, isFinal) {
     return [newC, newC];
 }
 
-function getNestedValue(data, path, defaultVal = null) {
+export function getNestedValue(data, path, defaultVal = null) {
     let cur = data;
     for (const k of path) {
         if (cur == null) return defaultVal;
@@ -91,7 +89,7 @@ function getNestedValue(data, path, defaultVal = null) {
     return cur != null ? cur : defaultVal;
 }
 
-class StreamingFrameParser {
+export class StreamingFrameParser {
     constructor() {
         this.buffer = '';
         this.expectedUnits = null;
@@ -199,7 +197,7 @@ function parseResponseByFrame(content) {
     return [frames, parser.buffer];
 }
 
-function extractJsonFromResponse(text) {
+export function extractJsonFromResponse(text) {
     if (typeof text !== 'string') throw new TypeError(`Expected string, got ${typeof text}`);
     const parser = new StreamingFrameParser();
     const result = parser.feed(text);
@@ -221,5 +219,3 @@ function extractJsonFromResponse(text) {
     if (lines.length) return lines;
     throw new Error('Could not find valid JSON in response.');
 }
-
-module.exports = { getCleanText, getDeltaByFpLen, getNestedValue, extractJsonFromResponse, StreamingFrameParser };
