@@ -1,5 +1,11 @@
 export class Gem {
-    constructor({ id, name, description = null, prompt = null, predefined } = {}) {
+    id: string;
+    name: string;
+    description: string | null;
+    prompt: string | null;
+    predefined: boolean;
+    constructor(opts: { id: string, name: string, description?: string | null, prompt?: string | null, predefined: boolean }) {
+        const { id, name, description = null, prompt = null, predefined } = opts;
         this.id = id;
         this.name = name;
         this.description = description;
@@ -12,15 +18,28 @@ export class Gem {
     }
 }
 
+export interface GemGetOptions {
+    id?: string | null;
+    name?: string | null;
+    defaultVal?: Gem | null;
+}
+
+export interface GemFilterOptions {
+    predefined?: boolean | null;
+    name?: string | null;
+}
+
 export class GemJar {
-    constructor(entries = []) {
+    private _store: Record<string, Gem>;
+    constructor(entries: [string, Gem][] = []) {
         this._store = {};
         for (const [id, gem] of entries) this._store[id] = gem;
     }
 
-    set(id, gem) { this._store[id] = gem; }
+    set(id: string, gem: Gem) { this._store[id] = gem; }
 
-    get({ id = null, name = null, defaultVal = null } = {}) {
+    get(opts: GemGetOptions = {}) {
+        const { id = null, name = null, defaultVal = null } = opts;
         if (id == null && name == null) throw new Error('At least one of gem id or name must be provided.');
         if (id != null) {
             const gem = this._store[id];
@@ -34,7 +53,8 @@ export class GemJar {
         return defaultVal;
     }
 
-    filter({ predefined = null, name = null } = {}) {
+    filter(opts: GemFilterOptions = {}) {
+        const { predefined = null, name = null } = opts
         const result = new GemJar();
         for (const [id, gem] of Object.entries(this._store)) {
             if (predefined != null && gem.predefined !== predefined) continue;
