@@ -1,4 +1,6 @@
-import followRedirects, { FollowResponse } from 'follow-redirects';
+import type { FollowResponse } from 'follow-redirects';
+
+import followRedirects from 'follow-redirects';
 
 export const DEFAULT_MAX_RESPONSE_HEADER_SIZE = 65536;
 

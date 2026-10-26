@@ -1,5 +1,6 @@
+import type { SaveVideoResult, SaveMediaResult, IWebImage, IGeneratedImage, IGeneratedVideo, IGeneratedMedia } from './media.js';
+
 import { inspect } from 'node:util';
-import { SaveVideoResult, SaveMediaResult, IWebImage, IGeneratedImage, IGeneratedVideo, IGeneratedMedia } from './media.js';
 import type { IDeepResearchPlan } from './research.js';
 
 function decodeHtml(str: string) {

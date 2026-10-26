@@ -1,5 +1,7 @@
+import type { ModelDef, ModelDict } from "./types/model.js";
+
 export { MODEL_HEADER_KEY } from "./types/model.js";
-import { buildModelHeader, MODEL_HEADER_KEY, ModelDef, ModelDict } from "./types/model.js";
+import { buildModelHeader, MODEL_HEADER_KEY } from "./types/model.js";
 
 export const STREAMING_FLAG_INDEX = 7;
 export const GEM_FLAG_INDEX = 19;
