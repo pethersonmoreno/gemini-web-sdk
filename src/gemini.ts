@@ -1025,5 +1025,3 @@ export class Gemini implements GeminiClient {
         throw lastErr;
     }
 }
-
-module.exports = { Gemini };
