@@ -3,15 +3,16 @@ import { Buffer } from 'node:buffer';
 import crypto from 'node:crypto';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { IAvailableModel, ModelDef, ModelInput } from './types/model.js';
+import type { ModelDef, ModelInput } from './types/model.js';
 import type { IModelOutput } from './types/output.js';
 import type { IWebImage, IGeneratedImage, IGeneratedVideo, IGeneratedMedia } from './types/media.js';
 import type { IDeepResearchResult, IDeepResearchStatus } from './types/research.js';
 import type { AddGemOptions, AskOptions, GeminiClient, GeminiClientGenerateContentOptions, GeminiClientGenerateOptions, GeminiClientStreamGuestOptions, GeminiOptions, ResearchOptions, SetGemOptions } from './types/gemini.js';
 import type { IChatSession, NewChatOptions } from './types/chat.js';
+import type { ModelIdentifier } from './constants.js';
 
 import {
-    Endpoint, GRPC, Headers, Model, ModelIdentifier, ErrorCode,
+    Endpoint, GRPC, Headers, Model, ErrorCode,
     TEMPORARY_CHAT_FLAG_INDEX, STREAMING_FLAG_INDEX, GEM_FLAG_INDEX,
     CARD_CONTENT_RE, ARTIFACTS_RE, DEFAULT_METADATA, MODEL_HEADER_KEY,
 } from './constants.js';

@@ -1,10 +1,11 @@
+import type { GeminiClient } from './gemini.js';
+
 import axios from 'axios';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { parseProxy } from '../utils/auth.js';
 import { headerLimitConfig } from '../utils/request.js';
-import { GeminiClient } from './gemini.js';
 
 function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
 

@@ -1,5 +1,8 @@
-import axios, { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios';
-import { Endpoint, EndpointOverrides, Headers } from '../constants.js';
+import type { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios';
+import type { EndpointOverrides } from '../constants.js';
+
+import axios from 'axios';
+import { Endpoint, Headers } from '../constants.js';
 import { AuthError } from '../errors.js';
 import { DEFAULT_MAX_RESPONSE_HEADER_SIZE, headerLimitConfig } from './request.js';
 
