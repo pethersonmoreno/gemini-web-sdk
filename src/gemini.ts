@@ -11,7 +11,7 @@ import type { AddGemOptions, AskOptions, GeminiClient, GeminiClientGenerateConte
 import type { IChatSession, NewChatOptions } from './types/chat.js';
 
 import {
-    Endpoint, GRPC, Headers, Model, ErrorCode,
+    Endpoint, GRPC, Headers, Model, ModelIdentifier, ErrorCode,
     TEMPORARY_CHAT_FLAG_INDEX, STREAMING_FLAG_INDEX, GEM_FLAG_INDEX,
     CARD_CONTENT_RE, ARTIFACTS_RE, DEFAULT_METADATA, MODEL_HEADER_KEY,
 } from './constants.js';
@@ -122,7 +122,7 @@ export class Gemini implements GeminiClient {
     _resolveModel(model: ModelInput) {
         if (!model || model === Model.UNSPECIFIED) return Model.UNSPECIFIED;
         if (model instanceof AvailableModel) return model;
-        if (typeof model === 'string') return Model.fromName(model);
+        if (typeof model === 'string') return Model.fromName(model as ModelIdentifier);
         if (typeof model === 'object' && model.model_name && model.model_header) {
             return Model.fromDict({ model_name: model.model_name, model_header: model.model_header });
         }
