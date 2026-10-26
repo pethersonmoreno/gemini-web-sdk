@@ -1,6 +1,8 @@
+import type { AddressInfo } from 'node:net';
+
 import assert from 'node:assert';
 import http from 'node:http';
-import net, { AddressInfo } from 'node:net';
+import net from 'node:net';
 
 import { Gemini } from '../index.js';
 import { AuthError } from '../src/errors.js';
