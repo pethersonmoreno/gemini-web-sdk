@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Buffer } from 'node:buffer';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { IAvailableModel, ModelDef, ModelInput } from './types/model.js';
@@ -324,12 +324,12 @@ export class Gemini implements GeminiClient {
         await this._ensure();
         if (this._guest && files) throw new APIError('File upload not available in guest mode.');
         if (this._guest && deep_research) throw new APIError('Deep research not available in guest mode.');
-        let fileData = null;
+        let fileData: (string | any[])[][] | null = null;
         if (files && files.length) {
             const uploaded = await Promise.all(files.map(f => uploadFile(f, this.proxy, this.pushId, this.cookies, { maxHeaderSize: this.maxResponseHeaderSize, endpoints: this.endpoints })));
             fileData = uploaded.map((url, i) => [[url], parseFileName(files[i])]);
         }
-        const ss = { last_texts: {}, last_thoughts: {} };
+        const ss: { last_texts: Record<string, string>, last_thoughts: Record<string, string> } = { last_texts: {}, last_thoughts: {} };
         let output = null;
         for await (const out of this._generate({ prompt, fileData, model, gem, chat, temporary, ss, deep_research, extended_thinking })) output = out;
         if (!output) throw new GeminiError('Failed to generate contents.');
@@ -347,7 +347,7 @@ export class Gemini implements GeminiClient {
             const uploaded = await Promise.all(files.map(f => uploadFile(f, this.proxy, this.pushId, this.cookies, { maxHeaderSize: this.maxResponseHeaderSize, endpoints: this.endpoints })));
             fileData = uploaded.map((url, i) => [[url], parseFileName(files[i])]);
         }
-        const ss = { last_texts: {}, last_thoughts: {} };
+        const ss: { last_texts: Record<string, string>, last_thoughts: Record<string, string> } = { last_texts: {}, last_thoughts: {} };
         let output = null;
         for await (const out of this._generate({ prompt, fileData, model, gem, chat, temporary, ss, deep_research, extended_thinking })) {
             output = out;
@@ -516,7 +516,7 @@ export class Gemini implements GeminiClient {
                         if (Array.isArray(entry65) && entry65.length >= 2) videoChipUUID = entry65[1];
                     }
 
-                    let drPlan = null;
+                    let drPlan: DeepResearchPlan | null = null;
                     if (deep_research) {
                         const planData = extractDeepResearchPlan(cd, text);
                         if (planData) drPlan = new DeepResearchPlan({ ...planData, cid: chat ? chat.cid : null });
@@ -802,8 +802,11 @@ export class Gemini implements GeminiClient {
                 generatedMedia.push(new GeneratedMedia({ url: mp4Url, thumbnail: mp4Thumb, mp3_url: mp3Url, mp3_thumbnail: mp3Thumb, cid, rid, rcid, client_ref: this, proxy: this.proxy }));
             }
         }
+        const result: [
+            string, string, IWebImage[], IGeneratedImage[], IGeneratedVideo[], IGeneratedMedia[]
+        ] = [text, thoughts, webImages, generatedImages, generatedVideos, generatedMedia];
 
-        return [text, thoughts, webImages, generatedImages, generatedVideos, generatedMedia];
+        return result;
     }
 
     async _createDeepResearchPlan(prompt: string, chat: IChatSession) {
@@ -877,7 +880,7 @@ export class Gemini implements GeminiClient {
                             const rcid = getNestedValue(cd, [0]);
                             if (!rcid) continue;
                             const [text, thoughts, webImgs, genImgs, genVids, genMedia] = this._parseCandidate(cd, cid, rid, rcid);
-                            turns.push({ role: 'model', text, model_output: new ModelOutput([cid, rid, rcid], [new Candidate({ rcid, index: 0, text, thoughts, web_images: webImgs, generated_images: genImgs, generated_videos: genVids, generated_media: genMedia, done: true })]) });
+                            turns.push(new ChatTurn({ role: 'model', text, model_output: new ModelOutput([cid, rid, rcid], [new Candidate({ rcid, index: 0, text, thoughts, web_images: webImgs, generated_images: genImgs, generated_videos: genVids, generated_media: genMedia, done: true })]) }));
                         }
                     }
                     const userText = getNestedValue(convTurn, [2, 0, 0], '');

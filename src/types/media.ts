@@ -298,7 +298,7 @@ export interface IGeneratedVideo extends IVideo {
     save(opts?: SaveVideoOptions): Promise<SaveVideoResult>;
 }
 
-export class GeneratedVideo extends Video {
+export class GeneratedVideo extends Video implements IGeneratedVideo {
     thumbnail: string | null;
     cid: string;
     rid: string;
@@ -323,7 +323,7 @@ export class GeneratedVideo extends Video {
 
     protected async _performSave(savePath: string, filename: string, verbose: boolean): Promise<SaveVideoResult> {
         const videoPath = await this._pollDownload(this.url, savePath, filename, '.mp4', verbose, 'video');
-        let thumbPath = null;
+        let thumbPath: string | null = null;
         if (this.thumbnail) {
             thumbPath = await this._downloadThumbnail(this.thumbnail, savePath, filename + '_thumb', verbose, 'thumbnail');
         }

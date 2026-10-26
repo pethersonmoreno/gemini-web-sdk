@@ -120,7 +120,7 @@ export class StreamingFrameParser {
         if (content) this.buffer += content;
         this._stripPrefixOnce();
 
-        const parsed = [];
+        const parsed: string[] = [];
         while (true) {
             if (this.expectedUnits === null && !this._readLengthMarker()) break;
             if (this.expectedUnits === null) break;
