@@ -196,8 +196,8 @@ export class ModelOutput implements IModelOutput {
         const c = this.candidates[this.chosen];
         if (!c) return { images: [], videos: [], media: [] };
         const images = await Promise.all(c.images.map(img => img.save({ path, verbose })));
-        const videos = await Promise.all(c.videos.map(vid => vid.save({ savePath: path, verbose })));
-        const media = await Promise.all(c.media.map(m => m.save({ savePath: path, verbose })));
+        const videos = await Promise.all(c.videos.map(vid => vid.save({ path, verbose })));
+        const media = await Promise.all(c.media.map(m => m.save({ path, verbose })));
         return { images, videos, media };
     }
 

@@ -200,7 +200,7 @@ export interface SaveMediaResult {
 }
 
 export interface SaveVideoOptions {
-    savePath?: string;
+    path?: string;
     filename?: string | null;
     verbose?: boolean;
 }
@@ -233,7 +233,7 @@ export class Video implements IVideo {
     toString() { return `Video(title=${this.title}, url=${this.url})`; }
 
     protected async save(opts: SaveVideoOptions = {}): Promise<SaveVideoResult | SaveMediaResult> {
-        const { savePath = 'temp', verbose = false } = opts;
+        const { path: savePath = 'temp', verbose = false } = opts;
         let { filename = null } = opts;
         if (!filename || !path.extname(filename)) {
             const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
@@ -317,8 +317,8 @@ export class GeneratedVideo extends Video {
     }
 
     public override async save(opts: SaveVideoOptions = {}): Promise<SaveVideoResult> {
-        const { savePath = 'temp', filename = null, verbose = false } = opts;
-        return (await super.save({savePath, filename, verbose})) as SaveVideoResult;
+        const { path: savePath = 'temp', filename = null, verbose = false } = opts;
+        return (await super.save({path: savePath, filename, verbose})) as SaveVideoResult;
     }
 
     protected async _performSave(savePath: string, filename: string, verbose: boolean): Promise<SaveVideoResult> {
@@ -388,8 +388,8 @@ export class GeneratedMedia extends Video implements IGeneratedMedia {
     }
 
     public override async save(opts: SaveVideoOptions = {}): Promise<SaveMediaResult> {
-        const { savePath = 'temp', filename = null, verbose = false } = opts;
-        return (await super.save({savePath, filename, verbose})) as SaveMediaResult;
+        const { path: savePath = 'temp', filename = null, verbose = false } = opts;
+        return (await super.save({path: savePath, filename, verbose})) as SaveMediaResult;
     }
 
     protected override async _performSave(savePath: string, filename: string, verbose: boolean): Promise<SaveMediaResult> {
