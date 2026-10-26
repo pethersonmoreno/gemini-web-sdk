@@ -1,5 +1,5 @@
 import { inspect } from 'node:util';
-import { WebImage, GeneratedImage, GeneratedVideo, GeneratedMedia, SaveVideoResult, SaveMediaResult } from './media.js';
+import { SaveVideoResult, SaveMediaResult, IWebImage, IGeneratedImage, IGeneratedVideo, IGeneratedMedia } from './media.js';
 import type { IDeepResearchPlan } from './research.js';
 
 function decodeHtml(str: string) {
@@ -34,15 +34,15 @@ export interface ICandidate {
     text_delta: string | null;
     thoughts: string | null;
     thoughts_delta: string | null;
-    web_images: WebImage[];
-    generated_images: GeneratedImage[];
-    generated_videos: GeneratedVideo[];
-    generated_media: GeneratedMedia[];
+    web_images: IWebImage[];
+    generated_images: IGeneratedImage[];
+    generated_videos: IGeneratedVideo[];
+    generated_media: IGeneratedMedia[];
     deep_research_plan: IDeepResearchPlan | null;
     done: boolean;
-    get images(): (WebImage | GeneratedImage)[];
-    get videos(): GeneratedVideo[];
-    get media(): GeneratedMedia[];
+    get images(): (IWebImage | IGeneratedImage)[];
+    get videos(): IGeneratedVideo[];
+    get media(): IGeneratedMedia[];
     toString(): string;
 }
 
@@ -53,10 +53,10 @@ export class Candidate implements ICandidate {
     text_delta: string | null;
     thoughts: string | null;
     thoughts_delta: string | null;
-    web_images: WebImage[];
-    generated_images: GeneratedImage[];
-    generated_videos: GeneratedVideo[];
-    generated_media: GeneratedMedia[];
+    web_images: IWebImage[];
+    generated_images: IGeneratedImage[];
+    generated_videos: IGeneratedVideo[];
+    generated_media: IGeneratedMedia[];
     deep_research_plan: IDeepResearchPlan | null;
     done: boolean;
     constructor(opts: {
@@ -66,10 +66,10 @@ export class Candidate implements ICandidate {
         text_delta?: string | null;
         thoughts?: string | null;
         thoughts_delta?: string | null;
-        web_images?: WebImage[];
-        generated_images?: GeneratedImage[];
-        generated_videos?: GeneratedVideo[];
-        generated_media?: GeneratedMedia[];
+        web_images?: IWebImage[];
+        generated_images?: IGeneratedImage[];
+        generated_videos?: IGeneratedVideo[];
+        generated_media?: IGeneratedMedia[];
         deep_research_plan?: IDeepResearchPlan | null;
         done?: boolean;
     }) {
@@ -143,9 +143,9 @@ export interface IModelOutput {
     get text_delta(): string;
     get thoughts(): string | null;
     get thoughts_delta(): string;
-    get images(): (WebImage | GeneratedImage)[];
-    get videos(): GeneratedVideo[];
-    get media(): GeneratedMedia[];
+    get images(): (IWebImage | IGeneratedImage)[];
+    get videos(): IGeneratedVideo[];
+    get media(): IGeneratedMedia[];
     get deep_research_plan(): IDeepResearchPlan | null;
     get metadata(): (string | null)[];
     set metadata(v: (string | null)[]);

@@ -145,4 +145,3 @@ export const ErrorCode = {
     IP_TEMPORARILY_BLOCKED: 1060,
     FEATURE_NOT_AVAILABLE: 1097,
 };
-
