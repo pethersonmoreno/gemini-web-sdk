@@ -5,13 +5,16 @@
     "moduleResolution": "nodenext",
     "rootDir": "./",
     "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "*.ts",
+    "index.ts",
     "src/**/*",
     "test/**/*"
   ],
