@@ -40,7 +40,7 @@
     "unofficial"
   ],
   "scripts": {
-    "build": "tsup index.ts --format cjs,esm --tsconfig tsconfig.build.json --out-dir dist && tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "build": "tsup --config tsup.config.ts && tsc -p tsconfig.build.json --emitDeclarationOnly",
     "test": "tsx test/rid-rcid.test.ts && tsx test/max-response-headers.test.ts"
   },
   "dependencies": {
