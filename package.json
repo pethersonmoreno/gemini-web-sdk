@@ -29,7 +29,7 @@
     "unofficial"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "tsx test/rid-rcid.test.ts && tsx test/max-response-headers.test.ts"
   },
   "dependencies": {
