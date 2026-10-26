@@ -60,65 +60,81 @@ const _MODEL_KEYS = [
     'ADVANCED_PRO', 'ADVANCED_FLASH', 'ADVANCED_LITE',
 ] as const;
 
+const listModelDefinitions = [
+  { model_name: 'unspecified', model_header: {}, advanced_only: false },
+  {
+    model_name: 'gemini-3-pro',
+    model_header: buildModelHeader('9d8ca3786ebdfbea', 1, 3),
+    advanced_only: false,
+  },
+  {
+    model_name: 'gemini-3-flash',
+    model_header: buildModelHeader('fbb127bbb056c959', 1, 1),
+    advanced_only: false,
+  },
+  {
+    model_name: 'gemini-3-lite',
+    model_header: buildModelHeader('cf41b0e0dd7d53e5', 1, 6),
+    advanced_only: false,
+  },
+  {
+    model_name: 'gemini-3-thinking',
+    model_header: buildModelHeader('5bf011840784117a', 1, 15),
+    advanced_only: false,
+  },
+  {
+    model_name: 'gemini-3-pro-plus',
+    model_header: buildModelHeader('e6fa609c3fa255c0', 4, 3),
+    advanced_only: true,
+  },
+  {
+    model_name: 'gemini-3-flash-plus',
+    model_header: buildModelHeader('56fdd199312815e2', 4, 1),
+    advanced_only: true,
+  },
+  {
+    model_name: 'gemini-3-lite-plus',
+    model_header: buildModelHeader('8c46e95b1a07cecc', 4, 6),
+    advanced_only: true,
+  },
+  {
+    model_name: 'gemini-3-pro-advanced',
+    model_header: buildModelHeader('e6fa609c3fa255c0', 2, 3),
+    advanced_only: true,
+  },
+  {
+    model_name: 'gemini-3-flash-advanced',
+    model_header: buildModelHeader('56fdd199312815e2', 2, 1),
+    advanced_only: true,
+  },
+  {
+    model_name: 'gemini-3-lite-advanced',
+    model_header: buildModelHeader('8c46e95b1a07cecc', 2, 6),
+    advanced_only: true,
+  },
+] as const satisfies ReadonlyArray<ModelDef>;
+
+export type ModelIdentifier = typeof listModelDefinitions[number]['model_name'];
+
+const modelDefinitions = listModelDefinitions.reduce((acc, current) => {
+  acc[current.model_name] = current;
+  return acc;
+}, {} as Record<ModelIdentifier, ModelDef>);
+
 export const Model = {
-    UNSPECIFIED: { model_name: 'unspecified', model_header: {}, advanced_only: false },
-    BASIC_PRO: {
-        model_name: 'gemini-3-pro',
-        model_header: buildModelHeader('9d8ca3786ebdfbea', 1, 3),
-        advanced_only: false,
-    },
-    BASIC_FLASH: {
-        model_name: 'gemini-3-flash',
-        model_header: buildModelHeader('fbb127bbb056c959', 1, 1),
-        advanced_only: false,
-    },
-    BASIC_LITE: {
-        model_name: 'gemini-3-lite',
-        model_header: buildModelHeader('cf41b0e0dd7d53e5', 1, 6),
-        advanced_only: false,
-    },
-    BASIC_THINKING: {
-        model_name: 'gemini-3-thinking',
-        model_header: buildModelHeader('5bf011840784117a', 1, 15),
-        advanced_only: false,
-    },
-    PLUS_PRO: {
-        model_name: 'gemini-3-pro-plus',
-        model_header: buildModelHeader('e6fa609c3fa255c0', 4, 3),
-        advanced_only: true,
-    },
-    PLUS_FLASH: {
-        model_name: 'gemini-3-flash-plus',
-        model_header: buildModelHeader('56fdd199312815e2', 4, 1),
-        advanced_only: true,
-    },
-    PLUS_LITE: {
-        model_name: 'gemini-3-lite-plus',
-        model_header: buildModelHeader('8c46e95b1a07cecc', 4, 6),
-        advanced_only: true,
-    },
-    ADVANCED_PRO: {
-        model_name: 'gemini-3-pro-advanced',
-        model_header: buildModelHeader('e6fa609c3fa255c0', 2, 3),
-        advanced_only: true,
-    },
-    ADVANCED_FLASH: {
-        model_name: 'gemini-3-flash-advanced',
-        model_header: buildModelHeader('56fdd199312815e2', 2, 1),
-        advanced_only: true,
-    },
-    ADVANCED_LITE: {
-        model_name: 'gemini-3-lite-advanced',
-        model_header: buildModelHeader('8c46e95b1a07cecc', 2, 6),
-        advanced_only: true,
-    },
-    fromName(name: string) {
-        const lower = name.toLowerCase();
-        for (const k of _MODEL_KEYS) {
-            if (Model[k].model_name === lower) return Model[k];
-        }
-        const names = _MODEL_KEYS.map(k => Model[k].model_name).join(', ');
-        throw new Error(`Unknown model name: ${name}. Available: ${names}`);
+    UNSPECIFIED: modelDefinitions['unspecified'],
+    BASIC_PRO: modelDefinitions['gemini-3-pro'],
+    BASIC_FLASH: modelDefinitions['gemini-3-flash'],
+    BASIC_LITE: modelDefinitions['gemini-3-lite'],
+    BASIC_THINKING: modelDefinitions['gemini-3-thinking'],
+    PLUS_PRO: modelDefinitions['gemini-3-pro-plus'],
+    PLUS_FLASH: modelDefinitions['gemini-3-flash-plus'],
+    PLUS_LITE: modelDefinitions['gemini-3-lite-plus'],
+    ADVANCED_PRO: modelDefinitions['gemini-3-pro-advanced'],
+    ADVANCED_FLASH: modelDefinitions['gemini-3-flash-advanced'],
+    ADVANCED_LITE: modelDefinitions['gemini-3-lite-advanced'],
+    fromName(name: ModelIdentifier): ModelDef {
+        return modelDefinitions[name];
     },
     fromDict(d: ModelDict) {
         if (!d.model_name || !d.model_header || typeof d.model_header !== 'object') {

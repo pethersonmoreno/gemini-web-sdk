@@ -1,4 +1,4 @@
-export { GRPC, Endpoint, EndpointOverrides, Headers } from './src/constants.js';
+export { GRPC, Endpoint, EndpointOverrides, Headers, ModelIdentifier } from './src/constants.js';
 export { NewChatOptions, GenerateContentOptions } from './src/types/chat.js';
 export { GeminiOptions, AskOptions, ResearchOptions, AddGemOptions, SetGemOptions } from './src/types/gemini.js';
 export { Gemini } from './src/gemini.js';
