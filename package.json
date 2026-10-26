@@ -40,7 +40,7 @@
     "unofficial"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsup index.ts --format cjs,esm --tsconfig tsconfig.build.json --out-dir dist && tsc -p tsconfig.build.json --emitDeclarationOnly",
     "test": "tsx test/rid-rcid.test.ts && tsx test/max-response-headers.test.ts"
   },
   "dependencies": {
@@ -52,6 +52,7 @@
     "@types/follow-redirects": "^1.14.4",
     "@types/mime-types": "^3.0.1",
     "@types/node": "^26.6.5",
+    "tsup": "^8.5.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
