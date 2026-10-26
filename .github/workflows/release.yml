@@ -140,12 +140,14 @@ jobs:
 
       - name: Detect repository context
         id: context
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GITHUB_SERVER_URL="${{ github.server_url }}"
           GITHUB_REPOSITORY="${{ github.repository }}"
           GITHUB_REPOSITORY_URL="${{ github.server_url }}/${{ github.repository }}"
           GITHUB_OWNER="${{ github.repository_owner }}"
-          GITHUB_OWNER_DISPLAY_NAME="${{ github.event.repository.owner.name }}"
+          GITHUB_OWNER_DISPLAY_NAME=$(gh api "users/${{ github.repository_owner }}" --jq '.name')
           if [ -z "$GITHUB_OWNER_DISPLAY_NAME" ] || [ "$GITHUB_OWNER_DISPLAY_NAME" = "null" ]; then
             GITHUB_OWNER_DISPLAY_NAME="$GITHUB_OWNER"
           fi
