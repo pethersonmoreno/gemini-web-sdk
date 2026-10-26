@@ -3,8 +3,19 @@
   "version": "2.3.0",
   "description": "Unofficial Node.js client for gemini.google.com — inspired by Gemini-API (Python). Supports streaming, chat sessions, gems, file uploads, and TypeScript.",
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "author": "Expert Vision Software",
   "repository": {
