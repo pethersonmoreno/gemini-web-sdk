@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.1] - 2026-10-26
+
+### Added
+
+- Full TypeScript migration: the codebase is now natively written in TypeScript and compiled via `tsup`.
+- Dual CommonJS (CJS) and ECMAScript Module (ESM) builds configured in `package.json` `exports`.
+- `ModelIdentifier` type exported to strictly type available model names.
+- Added `follow-redirects` directly to package dependencies.
+- Enhanced CI release workflow with support for fork-aware scoped publishing, Node 24, and strict Git tag version parity checks.
+
+### Changed
+
+- Refactored project structure to output compiled files to the `dist/` directory, replacing the manual `index.d.ts` file.
+- Updated `package.json` to `"type": "module"` and explicitly defined module exports.
+- Migrated test scripts to execute TypeScript files natively using `tsx`.
+
+### Fixed
+
+- Fixed the release workflow commit SHA reference for manual workflow dispatch events.
+
+
 ## [2.3.0] - 2026-09-13
 
 ### Added
